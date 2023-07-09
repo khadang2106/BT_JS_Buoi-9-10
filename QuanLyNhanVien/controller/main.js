@@ -57,7 +57,7 @@ function getEmployeeInfo(bool) {
         4,
         6
       ) &&
-      valid.checkExist(account, 'tbTKNV', '(*) Tài khoản đã tồn tại!');
+      valid.checkExistAccount(account, 'tbTKNV', '(*) Tài khoản đã tồn tại!');
   }
   //Full Name
   isValid &=
@@ -71,14 +71,17 @@ function getEmployeeInfo(bool) {
       '(*) Vui lòng nhập Họ tên hợp lệ!'
     );
   //Email
-  isValid &=
-    valid.checkEmpty(email, 'tbEmail', '(*) Vui lòng không để trống!') &&
-    valid.checkPattern(
-      email,
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'tbEmail',
-      '(*) Vui lòng nhập Email hợp lệ!'
-    );
+  if (bool) {
+    isValid &=
+      valid.checkEmpty(email, 'tbEmail', '(*) Vui lòng không để trống!') &&
+      valid.checkPattern(
+        email,
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'tbEmail',
+        '(*) Vui lòng nhập Email hợp lệ!'
+      ) &&
+      valid.checkExistEmail(email, 'tbEmail', '(*) Email đã tồn tại!');
+  }
   //Password
   isValid &=
     valid.checkEmpty(password, 'tbMatKhau', '(*) Vui lòng không để trống!') &&
@@ -100,9 +103,15 @@ function getEmployeeInfo(bool) {
     valid.checkEmpty(startDate, 'tbNgay', '(*) Vui lòng không để trống!') &&
     valid.checkPattern(
       startDate,
-      /^(0?[1-9]|1[012])[/](0?[1-9]|[12][0-9]|3[01])[/]\d{4}$/,
+      /^(((((((0?[13578])|(1[02]))[\.\-/]?((0?[1-9])|([12]\d)|(3[01])))|(((0?[469])|(11))[\.\-/]?((0?[1-9])|([12]\d)|(30)))|((0?2)[\.\-/]?((0?[1-9])|(1\d)|(2[0-8]))))[\.\-/]?(((19)|(20))?([\d][\d]))))|((0?2)[\.\-/]?(29)[\.\-/]?(((19)|(20))?(([02468][048])|([13579][26])))))$/,
       'tbNgay',
-      '(*) Ngày làm phải theo định dạng mm/dd/yyyy!'
+      '(*) Ngày đã chọn không tồn tại trong thực tế!'
+    ) &&
+    valid.checkPattern(
+      startDate,
+      /\d{2}\/\d{2}\/\d{4}/,
+      'tbNgay',
+      '(*) Ngày làm phải theo định dạng mm/dd/yyyy'
     );
   //Basic Pay
   isValid &=
@@ -163,7 +172,9 @@ function getEmployeeInfo(bool) {
 
 getEle('btnThem').onclick = function () {
   getEle('btnThemNV').disabled = false;
+  getEle('btnCapNhat').disabled = true;
   getEle('tknv').disabled = false;
+  fillValue('', '', '', '', '', '', 'Chọn chức vụ', '');
   hideError('tbTKNV');
   hideError('tbTen');
   hideError('tbEmail');
@@ -191,17 +202,20 @@ function delData(account) {
 
 function updateData(account) {
   getEle('btnThemNV').disabled = true;
+  getEle('btnCapNhat').disabled = false;
   var employee = employeeList.getEmployeeData(account);
   if (employee) {
-    getEle('tknv').value = employee.account;
+    fillValue(
+      employee.account,
+      employee.fullName,
+      employee.email,
+      employee.password,
+      employee.startDate,
+      employee.basicPay,
+      employee.position,
+      employee.workTime
+    );
     getEle('tknv').disabled = true;
-    getEle('name').value = employee.fullName;
-    getEle('email').value = employee.email;
-    getEle('password').value = employee.password;
-    getEle('datepicker').value = employee.startDate;
-    getEle('luongCB').value = employee.basicPay;
-    getEle('chucvu').value = employee.position;
-    getEle('gioLam').value = employee.workTime;
   }
 }
 
@@ -221,7 +235,6 @@ function searchClass() {
 }
 getEle('searchName').addEventListener('keyup', searchClass);
 
-//Hàm lấy và set data
 function setLocalStorage() {
   localStorage.setItem('employeeList', JSON.stringify(employeeList.list));
 }

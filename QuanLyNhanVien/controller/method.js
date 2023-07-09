@@ -12,6 +12,26 @@ function hideError(id) {
   getEle(id).style.display = 'none';
 }
 
+function fillValue(
+  tknv,
+  name,
+  email,
+  password,
+  datepicker,
+  luongCB,
+  chucVu,
+  gioLam
+) {
+  getEle('tknv').value = tknv;
+  getEle('name').value = name;
+  getEle('email').value = email;
+  getEle('password').value = password;
+  getEle('datepicker').value = datepicker;
+  getEle('luongCB').value = luongCB;
+  getEle('chucvu').value = chucVu;
+  getEle('gioLam').value = gioLam;
+}
+
 // remove Vietnamese Tones
 function removeVietnameseTones(str) {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');

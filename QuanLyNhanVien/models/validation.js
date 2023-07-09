@@ -44,10 +44,26 @@ function Validation() {
     return false;
   };
 
-  this.checkExist = function (value, errorID, mess) {
+  this.checkExistAccount = function (value, errorID, mess) {
     var isExist = false;
     for (var i = 0; i < employeeList.list.length; i++) {
       if (value === employeeList.list[i].account) {
+        isExist = true;
+        break;
+      }
+    }
+    if (isExist) {
+      showError(errorID, mess);
+      return false;
+    }
+    hideError(errorID);
+    return true;
+  };
+
+  this.checkExistEmail = function (value, errorID, mess) {
+    var isExist = false;
+    for (var i = 0; i < employeeList.list.length; i++) {
+      if (value === employeeList.list[i].email) {
         isExist = true;
         break;
       }
