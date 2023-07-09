@@ -31,4 +31,19 @@ function EmployeeList() {
       this.list[this.findIndex(employee.account)] = employee;
     }
   };
+
+  this.searchEmployee = function (keyword) {
+    var arrSearch = [];
+    for (var i = 0; i < this.list.length; i++) {
+      var employee = this.list[i];
+      var keywordLowerCase = removeVietnameseTones(keyword);
+      var employeeClassLowerCase = removeVietnameseTones(
+        employee.employeeClass
+      );
+      if (employeeClassLowerCase.indexOf(keywordLowerCase) !== -1) {
+        arrSearch.push(employee);
+      }
+    }
+    return arrSearch;
+  };
 }
