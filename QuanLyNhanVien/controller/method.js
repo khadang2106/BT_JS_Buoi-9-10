@@ -12,6 +12,30 @@ function hideError(id) {
   getEle(id).style.display = 'none';
 }
 
+function checkInputValue() {
+  var account = getEle('tknv').value;
+  var fullName = getEle('name').value;
+  var email = getEle('email').value;
+  var password = getEle('password').value;
+  var startDate = getEle('datepicker').value;
+  var basicPay = getEle('luongCB').value;
+  var position = getEle('chucvu').value;
+  var workTime = getEle('gioLam').value;
+  if (
+    account !== '' &&
+    fullName !== '' &&
+    email !== '' &&
+    password !== '' &&
+    startDate !== '' &&
+    basicPay !== '' &&
+    position !== '' &&
+    workTime !== ''
+  ) {
+    return true;
+  }
+  return false;
+}
+
 function fillValue(
   tknv,
   name,
@@ -30,6 +54,17 @@ function fillValue(
   getEle('luongCB').value = luongCB;
   getEle('chucvu').value = chucVu;
   getEle('gioLam').value = gioLam;
+}
+
+function resetError() {
+  hideError('tbTKNV');
+  hideError('tbTen');
+  hideError('tbEmail');
+  hideError('tbMatKhau');
+  hideError('tbNgay');
+  hideError('tbLuongCB');
+  hideError('tbChucVu');
+  hideError('tbGiolam');
 }
 
 // remove Vietnamese Tones

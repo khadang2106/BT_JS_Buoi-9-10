@@ -57,7 +57,12 @@ function getEmployeeInfo(bool) {
         4,
         6
       ) &&
-      valid.checkExistAccount(account, 'tbTKNV', '(*) Tài khoản đã tồn tại!');
+      valid.checkExist(
+        account,
+        'tbTKNV',
+        '(*) Tài khoản đã tồn tại!',
+        'account'
+      );
   }
   //Full Name
   isValid &=
@@ -80,7 +85,7 @@ function getEmployeeInfo(bool) {
         'tbEmail',
         '(*) Vui lòng nhập Email hợp lệ!'
       ) &&
-      valid.checkExistEmail(email, 'tbEmail', '(*) Email đã tồn tại!');
+      valid.checkExist(email, 'tbEmail', '(*) Email đã tồn tại!', 'email');
   }
   //Password
   isValid &=
@@ -174,15 +179,10 @@ getEle('btnThem').onclick = function () {
   getEle('btnThemNV').disabled = false;
   getEle('btnCapNhat').disabled = true;
   getEle('tknv').disabled = false;
-  fillValue('', '', '', '', '', '', 'Chọn chức vụ', '');
-  hideError('tbTKNV');
-  hideError('tbTen');
-  hideError('tbEmail');
-  hideError('tbMatKhau');
-  hideError('tbNgay');
-  hideError('tbLuongCB');
-  hideError('tbChucVu');
-  hideError('tbGiolam');
+  if (checkInputValue()) {
+    fillValue('', '', '', '', '', '', 'Chọn chức vụ', '');
+    resetError();
+  }
 };
 
 getEle('btnThemNV').onclick = function () {
@@ -203,6 +203,7 @@ function delData(account) {
 function updateData(account) {
   getEle('btnThemNV').disabled = true;
   getEle('btnCapNhat').disabled = false;
+  resetError();
   var employee = employeeList.getEmployeeData(account);
   if (employee) {
     fillValue(
