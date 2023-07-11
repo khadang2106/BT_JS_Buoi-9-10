@@ -32,7 +32,7 @@ function renderTable(data) {
   getEle('tableDanhSach').innerHTML = content;
 }
 
-function getEmployeeInfo(bool) {
+function getEmployeeInfo(boolAccount, boolEmail) {
   var account = getEle('tknv').value;
   var fullName = getEle('name').value;
   var email = getEle('email').value;
@@ -47,7 +47,7 @@ function getEmployeeInfo(bool) {
    */
   var isValid = true;
   //Account
-  if (bool) {
+  if (boolAccount) {
     isValid &=
       valid.checkEmpty(account, 'tbTKNV', '(*) Vui lòng không để trống!') &&
       valid.checkLength(
@@ -76,7 +76,7 @@ function getEmployeeInfo(bool) {
       '(*) Vui lòng nhập Họ tên hợp lệ!'
     );
   //Email
-  if (bool) {
+  if (boolEmail) {
     isValid &=
       valid.checkEmpty(email, 'tbEmail', '(*) Vui lòng không để trống!') &&
       valid.checkPattern(
@@ -186,7 +186,7 @@ getEle('btnThem').onclick = function () {
 };
 
 getEle('btnThemNV').onclick = function () {
-  var employee = getEmployeeInfo(true);
+  var employee = getEmployeeInfo(true, true);
   if (employee) {
     employeeList.addEmployee(employee);
     renderTable(employeeList.list);
@@ -220,10 +220,25 @@ function updateData(account) {
   }
 }
 
+function findCurrentEmail() {
+  var account = getEle('tknv').value;
+  var currentEmployee = employeeList.getEmployeeData(account);
+  return currentEmployee.email;
+}
+
 getEle('btnCapNhat').onclick = function () {
-  var employee = getEmployeeInfo(false);
+  var currentEmail = findCurrentEmail();
+  var inputEmail = getEle('email').value;
+  var employee;
+  if (inputEmail === currentEmail) {
+    hideError('tbEmail');
+    employee = getEmployeeInfo(false, false);
+  } else {
+    employee = getEmployeeInfo(false, true);
+  }
   if (employee) {
     employeeList.updateEmployee(employee);
+    alert('Cập nhật thành công!');
     renderTable(employeeList.list);
     setLocalStorage();
   }
