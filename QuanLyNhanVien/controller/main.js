@@ -14,7 +14,7 @@ function renderTable(data) {
         <td>${data[i].email}</td>
         <td>${data[i].startDate}</td>
         <td>${data[i].position}</td>
-        <td>${numberFormat.format(data[i].salary)}</td>
+        <td>${numberFormat.format(data[i].salary)}VND</td>
         <td>${data[i].employeeClass}</td>
         <td>
             <div class="d-flex">
@@ -181,8 +181,8 @@ getEle('btnThem').onclick = function () {
   getEle('tknv').disabled = false;
   if (checkInputValue()) {
     fillValue('', '', '', '', '', '', 'Chọn chức vụ', '');
-    resetError();
   }
+  resetError();
 };
 
 getEle('btnThemNV').onclick = function () {

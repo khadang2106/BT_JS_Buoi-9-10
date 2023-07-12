@@ -22,18 +22,18 @@ function checkInputValue() {
   var position = getEle('chucvu').value;
   var workTime = getEle('gioLam').value;
   if (
-    account !== '' &&
-    fullName !== '' &&
-    email !== '' &&
-    password !== '' &&
-    startDate !== '' &&
-    basicPay !== '' &&
-    position !== '' &&
-    workTime !== ''
+    account === '' ||
+    fullName === '' ||
+    email === '' ||
+    password === '' ||
+    startDate === '' ||
+    basicPay === '' ||
+    position === '' ||
+    workTime === ''
   ) {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 }
 
 function fillValue(
